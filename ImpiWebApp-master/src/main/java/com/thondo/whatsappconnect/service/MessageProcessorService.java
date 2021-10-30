@@ -97,7 +97,7 @@ public class MessageProcessorService {
                     //  Optional<MainProfile>mainProfile1 = mainProfileRepository.findByMobileNumber()
 
                     else{
-                       // OrderItem orderItem = new OrderItem();
+                        OrderItem orderItem = new OrderItem();
                        // Item item = new Item();
 
                             return orderService.orderPlacement(pendingOrder.get(),optionalMainProfile.get(),

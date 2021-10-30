@@ -12,6 +12,7 @@ import com.thondo.whatsappconnect.repository.OrdersRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+        @Transactional
 public class OrderService {
     @Autowired
     private OrdersRepository ordersRepository;
@@ -93,7 +95,7 @@ public class OrderService {
            // orderItems.add(orderItem);
             item.setName("PICO");
             orderItem.setItem(item);
-            orderItem.setStatus("Pending");
+            orderItem.setStatus("Pending Quantity");
             System.out.println("orderitem id : " + orderItem.getId());
            // order.setOrderItems(orderItem);
             order.getOrderItems().add(orderItem);
@@ -113,14 +115,13 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("PICO plus");
-
             item.setName("PICO plus");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
             orderItem.setOrders(order);
             order.setCurrentItem(5);
             orderItem.setItem(item);
-            orderItem.setStatus("Pending");
+            orderItem.setStatus("Pending Quantity");
             order.getOrderItems().add(orderItem);
             itemsRepository.save(item);
             orderItemsRepository.save(orderItem);
@@ -131,6 +132,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Pro 200");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Pro 200");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
@@ -152,6 +154,7 @@ public class OrderService {
             orderItem.setItem(item);
             order.setCurrentItem(5);
             orderItem.setOrders(order);
+            orderItem.setStatus("Pending Quantity");
             itemsRepository.save(item);
             orderItemsRepository.save(orderItem);
             ordersRepository.save(order);
@@ -168,6 +171,7 @@ public class OrderService {
             order.setMenuStage(3);
             order.setCurrentItem(5);
             orderItem.setItem(item);
+            orderItem.setStatus("Pending Quantity");
             itemsRepository.save(item);
             orderItemsRepository.save(orderItem);
             ordersRepository.save(order);
@@ -177,6 +181,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Boom");
+            orderItem.setStatus("Pending Quantity");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
             order.setCurrentItem(5);
@@ -191,6 +196,7 @@ public class OrderService {
             Item item = new Item();
             orderItem.setName("Home 40z");
             item.setName("Home 40z");
+            orderItem.setStatus("Pending Quantity");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
             order.setCurrentItem(5);
@@ -206,6 +212,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Home 60");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Home 60");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
@@ -220,6 +227,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Home 120");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Home 120");
          //   order.setOrderItems(ArrayList<OrderItem>);
             order.setOrderName(orderItem.getName());
@@ -236,6 +244,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Home 400");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Home 400");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
@@ -252,6 +261,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Lights");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Lights");
             order.setOrderName(orderItem.getName());
             order.setMenuStage(3);
@@ -272,6 +282,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem();
             Item item = new Item();
             orderItem.setName("Lorenz PS2-100");
+            orderItem.setStatus("Pending Quantity");
             item.setName("Lorenz PS2-100");
             item.setStatus(item.getStatus());
             item.setType(item.getType());
@@ -292,7 +303,8 @@ public class OrderService {
             item.setStatus(item.getStatus());
             item.setType(item.getType());
             item.setId(item.getId());
-            orderItem.setStatus("Pending");
+
+            orderItem.setStatus("Pending Quantity");
             item.setName("Future Pumps SF1");
             orderItem.setName("Future Pumps SF1");
            // order.setOrderName(orderItem.getName());
@@ -300,7 +312,6 @@ public class OrderService {
             order.setMenuStage(3);
             orderItem.setOrders(order);
             orderItem.setItem(item);
-            orderItem.setStatus("Pending");
             orderItemsRepository.save(orderItem);
             ordersRepository.save(order);
             return "Quantity";
@@ -315,35 +326,38 @@ public class OrderService {
             order.setMenuStage(3);
             orderItem.setOrders(order);
             orderItem.setItem(item);
-            orderItem.setStatus("Pending");
+            orderItem.setStatus("Pending Quantity");
             orderItemsRepository.save(orderItem);
             ordersRepository.save(order);
             return "Quantity";
         }
 
-       Optional<OrderItem> orderItem1 = orderItemsRepository.findByName(order.getOrderName());
+      // Optional<OrderItem> orderItem1 = orderItemsRepository.findByName(order.getOrderName().);
       //  Optional<OrderItem>orderItem2 = orderItemsRepository.findByName(order.getOrderName());
 
 
             if (order.getMenuStage() == 3) {
-                OrderItem orderItem = new OrderItem();
+              Optional< OrderItem> orderItem = orderItemsRepository.findByStatus("Pending Quantity");
+
                 int qty = Integer.parseInt(body);
                 List<OrderItem> orderItems = new ArrayList<>();
                 order.setOrderItems(new ArrayList<>());
 
-                orderItem.setName(orderItem.getName());
-                orderItem1.get().setQuantity(qty);
+                orderItem.get().setName(orderItem.get().getName());
+                orderItem.get().setQuantity(qty);
+                orderItem.get().setStatus("Completed");
+               // orderItem1.get().setQuantity(qty);
                 order.setQuantity(body);
                 // orderItem.setQuantity(qty);
                 order.setMenuStage(4);
                 order.setCurrentItem(0);
                 mainProfile.setMenuStage(0);
                 //  orderItem.setOrders(order);
-                orderItems.add(orderItem1.get());
-                //  orderItems.add(orderItem);
+               // orderItems.add(orderItem1.get());
+                orderItems.add(orderItem.get());
                 ordersRepository.save(order);
-                orderItemsRepository.save(orderItem1.get());
-                // orderItemsRepository.save(orderItem);
+               // orderItemsRepository.save(orderItem1.get());
+                 orderItemsRepository.save(orderItem.get());
                 return "1. Add Another Product \n 2. Continue";
             }
 
@@ -425,22 +439,34 @@ public class OrderService {
             order.setSourceOfIncome(body);
             order.setMenuStage(17);
             ordersRepository.save(order);
-            List<OrderItem> allOrderItems = orderItemsRepository.findAll();
+            //Optional<OrderItem> allOrderItems = orderItemsRepository.findByStatus("Completed");
+                List<OrderItem> orderItems = orderItemsRepository.findAll();
+
 
             String response = " ";
+
+                List<OrderItem> allOrderItems = orderItems.stream()
+                        .filter(allItems -> allItems.getStatus().equalsIgnoreCase("Completed"))
+                        .collect(Collectors.toList());
+
 
             for (OrderItem orderItemSummary : allOrderItems) {
                 response = response + orderItemSummary.getName() + " x "
                         + orderItemSummary.getQuantity() +"\n \t";
+                orderItemSummary.setStatus("Finalized");
             }
+
+
             return "Order Summary \n" +
                     "\t Kindly confirm your order below : \n"+ "\t" +
                     response + "\n  1.Confirm \n 2.Redo Order"  ;
         }
         else if (order.getMenuStage() == 17 && body.equalsIgnoreCase("1") ){
 
+
             order.setMenuSelected(MenuEnum.ORDER.getValue());
             order.setStatus("Submitted");
+            order.setMenuStage(0);
             mainProfile.setMenuStage(0);
             mainProfileRepository.save(mainProfile);
             ordersRepository.save(order);
